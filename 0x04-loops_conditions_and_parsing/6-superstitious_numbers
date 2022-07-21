@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# This script is displaying "Best School" 10 times
+# This script is displaying superstitious numbers
+# "bad luck from China" 4th iteration
+# "bad luck from Japan" 9th iteration
+# "bad luck from Italy" 17th iteration
 
 i=1
 while [ $i -lt 21 ]
