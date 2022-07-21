@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#  Script bash displays the content for current directory
+
+for entry in *;
+do
+    echo "$entry" | cut -d"-" -f2
+done
