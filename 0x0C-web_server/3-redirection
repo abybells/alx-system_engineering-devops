@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# install a new Nginx web server, and configure it so that /redirect_me is redirecting to another page
+apt-get update
+apt-get -y install nginx
+ufw allow 'Nginx HTTP'
+mv /var/www/html/index.nginx-debian.html /var/www/html/save_index.nginx-debian.html
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/save_default
+sed -i "/server_name _;/a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default
+service nginx start
