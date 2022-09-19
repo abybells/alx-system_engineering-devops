@@ -3,7 +3,7 @@
 apt-get -y update
 apt-get -y install nginx
 # 1 Return a page Holberton School
-echo "Holberton School" | tee /var/www/html/index.html
+echo "Hello World" | tee /var/www/html/index.html
 # 2 redirection page
 TEXT="location /redirect_me {\\n return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\\n}\\n"
 sudo sed -i "42i $TEXT" /etc/nginx/sites-available/default
