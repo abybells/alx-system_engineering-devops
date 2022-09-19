@@ -6,5 +6,5 @@ ufw allow 'Nginx HTTP'
 mv /var/www/html/index.nginx-debian.html /var/www/html/save_index.nginx-debian.html
 echo "Hello World!" > /var/www/html/index.nginx-debian.html
 cp /etc/nginx/sites-available/default /etc/nginx/sites-available/save_default
-sed -i "/server_name _;/a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default
+sed -i "/server_name _;/a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 301;" /etc/nginx/sites-available/default
 service nginx start
