@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
-# install a new Nginx web server, and configure it so that its HTTP response contains a custom header
-# name of the custom HTTP header must be X-Served-By
-# value of the custom HTTP header must be the hostname of the server Nginx is running on
-apt-get update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-cp /etc/nginx/sites-available/default /etc/nginx/sites-available/save_default
-sed -i "/server_name _;/a add_header X-Served-By $HOSTNAME;\n" /etc/nginx/sites-available/default
-service nginx restart
+#Configure your Nginx server to have a custom 404 page that contains the string
+#shellcheck disable=SC2154
+
+sudo apt-get update
+sudo apt-get install -y nginx
+echo "Hello World!" | sudo tee /var/www/html/index.html
+new_string="listen 80 default_server;\n\trewrite ^\/redirect_me https:\/\/www.youtube.com\/BvWnEiOoAEk permanent;"
+sudo sed -i "s/listen 80 default_server;/$new_string/" /etc/nginx/sites-available/default
+echo "Ceci n'est pas une page\n" | sudo tee /var/www/html/404.html
+new_string="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+sudo sed -i "s/listen 80 default_server;/$new_string/" /etc/nginx/sites-available/default
+sed -i "s/include \/etc\/nginx\/sites-enabled\/\*;/include \/etc\/nginx\/sites-enabled\/\*;\n\tadd_header X-Served-By \"$HOSTNAME\";/" /etc/nginx/nginx.conf
+sudo service nginx restart
