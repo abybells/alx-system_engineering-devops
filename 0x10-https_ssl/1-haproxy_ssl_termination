@@ -35,18 +35,17 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
-frontend www-http
+frontend abybells-frontend-http
         bind *:80
-        reqadd X-Forwarded-Proto:\ http
-        default_backend web-backend
+        http-request set-header X-Forwarded-Proto http
+        default_backend abybells-backend
 
-frontend www-https
-        bind *:443 ssl crt /etc/haproxy/ssl/www.abybells.tech.pem
-        reqadd X-Forwarded-Proto:\ https
-        default_backend web-backend
+frontend abybells-alx-frontend-https
+        bind *:443 ssl crt /etc/ssl/www.abybells.tech/www.abybells.tech.pem
+        http-request set-header X-Forwarded-Proto http
+        default_backend abybells-backend
 
-backend web-backend
-        redirect scheme https if !{ ssl_fc }
+backend abybells-backend
         balance roundrobin
         server 18348-web-01 3.237.34.221:80 check
         server 18348-web-02 3.210.181.7:80 check
