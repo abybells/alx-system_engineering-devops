@@ -1,15 +1,8 @@
 #!/usr/bin/env bash
-
-# Using your debugging skills, find out what’s keeping your Ubuntu
-# container’s Nginx installation from listening on port 80
-# Feel free to install whatever tool you need, start and destroy as
-# many containers as you need to debug the issue
-# write a Bash script with the minimum number of commands to automate your fix
-# Nginx must be running, and listening on port 80 of all the server’s
-# active IPv4 IPs.
+#Nginx must be running, and listening on port 80
 
 sudo apt-get -y update
 sudo apt-get -y install nginx
 ufw allow 'Nginx HTTP'
-sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
+sudo sed -i "s/sites-enabled/sites-available/" /etc/nginx/nginx.conf
 sudo service nginx start
