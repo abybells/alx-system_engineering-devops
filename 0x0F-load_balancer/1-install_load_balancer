@@ -1,4 +1,4 @@
-#!/usr/in/env bash
+#!/usr/bin/env bash
 # HaProxy installation and configuartion
 
 apt-get install --no-install-recommends software-properties-common
