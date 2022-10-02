@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-# Bash script that displays information about subdomains
-
-func () {
-    if [ -z "$2" ]
-    then
-	dig www."$1" | grep -A1 'ANSWER SECTION:' | awk '/www/ {print "The subdomain www is a "$(NF - 1)" record and points to "$NF}'
-	dig lb-01."$1" | grep -A1 'ANSWER SECTION:' | awk '/lb-01/ {print "The subdomain lb-01 is a "$(NF - 1)" record and points to "$NF}'
-	dig web-01."$1" | grep -A1 'ANSWER SECTION:' | awk '/web-01/ {print "The subdomain web-01 is a "$(NF - 1)" record and points to "$NF}'
-	dig web-02."$1" | grep -A1 'ANSWER SECTION:' | awk '/web-02/ {print "The subdomain web-02 is a "$(NF - 1)" record and points to "$NF}'
-    else
-	dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | awk -v SUBDOMAIN="$2" "/$2/"'{print "The subdomain "SUBDOMAIN" is a "$(NF - 1)" record and points to "$NF}'
-    fi
-    return 0
+# script displays information about subdomains.
+# shellcheck disable=SC2086
+display_subdomain ()
+{
+	domain="$1"
+	subdomain="$2"
+	dig "$subdomain.$domain" | awk '/ANSWER SECTION:/{getline; printf "The subdomain %s is a %s record and points to %s\n", var, $4, $5}' var="$subdomain"
 }
 
-func "$1" "$2"
+for subdomain in "www" "lb-01" "web-01" "web-02"
+do
+	if [ -z "$2" ] || [ "$2" == "$subdomain" ]
+	then
+	display_subdomain "$1" "$subdomain"
+	fi
+done
