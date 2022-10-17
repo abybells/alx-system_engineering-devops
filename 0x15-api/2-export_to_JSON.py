@@ -13,8 +13,9 @@ if __name__ == "__main__":
         u_url = 'https://jsonplaceholder.typicode.com/users/'
         td_url = 'https://jsonplaceholder.typicode.com/todos?userId='
 
-        USER_ID = requests.get(u_url + sys.argv[1]).json()['id']
-        USERNAME = requests.get(u_url + sys.argv[1]).json()['username']
+        user_data = requests.get(u_url + sys.argv[1]).json()
+        USER_ID = user_data.get('id')
+        USERNAME = user_data.get('username')
         TASK_COMPLETED_STATUSES = [task['completed'] for task in
                                    requests.get(td_url + sys.argv[1]).json()]
         TASKS_TITLES = [task['title'] for task in
@@ -27,5 +28,5 @@ if __name__ == "__main__":
                         "username": "{}".format(USERNAME)}
                        for N in range(TOTAL_NUMBER_OF_TASKS)]}
 
-        with open('{}.json'.format(USER_ID), 'w') as fp:
-            json.dump(TASKS_DICT, fp)
+        with open('{}.json'.format(USER_ID), 'w') as jsonfile:
+            json.dump(TASKS_DICT, jsonfile)
