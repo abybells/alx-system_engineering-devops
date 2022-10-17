@@ -1,39 +1,30 @@
 #!/usr/bin/python3
-"""Request employee ID from API
 """
-
-import csv
-import requests
-from sys import argv
-
+Write a Python script that, using this REST API, for a given employee ID,
+returns information about his/her TODO list progress
+"""
 if __name__ == "__main__":
 
-    def make_request(resource, param=None):
-        """Retrieve user from API
-        """
-        url = 'https://jsonplaceholder.typicode.com/'
-        url += resource
-        if param:
-            url += ('?' + param[0] + '=' + param[1])
+    import requests
+    import sys
 
-        # make request
-        r = requests.get(url)
+    if len(sys.argv) == 2 and sys.argv[1].isdigit():
+        u_url = 'https://jsonplaceholder.typicode.com/users/'
+        td_url = 'https://jsonplaceholder.typicode.com/todos?userId='
 
-        # extract json response
-        r = r.json()
-        return r
+        USER_ID = requests.get(u_url + sys.argv[1]).json()['id']
+        USERNAME = requests.get(u_url + sys.argv[1]).json()['username']
+        TASK_COMPLETED_STATUSES = [task['completed'] for task in requests.
+                                   get(td_url + sys.argv[1]).json()]
+        TASKS_TITLES = [task['title'] for task in requests.
+                        get(td_url + sys.argv[1]).json()]
+        TOTAL_NUMBER_OF_TASKS = len(requests.get(td_url + sys.argv[1]).json())
 
-    user = make_request('users', ('id', argv[1]))[0]
-    tasks = make_request('todos', ('userId', argv[1]))
+        TASKS_LIST = ['"{}","{}","{}","{}"\n'.
+                      format(USER_ID, USERNAME, TASK_COMPLETED_STATUSES[N],
+                             TASKS_TITLES[N])
+                      for N in range(TOTAL_NUMBER_OF_TASKS)]
 
-    csv_filename = argv[1] + '.csv'
-    with open(csv_filename, mode='w') as f:
-        writer = csv.writer(f,
-                            delimiter=',',
-                            quotechar='"',
-                            quoting=csv.QUOTE_ALL)
-        for task in tasks:
-            writer.writerow([user['id'],
-                            user['username'],
-                            task['completed'],
-                            task['title']])
+        with open('{}.csv'.format(USER_ID), 'w') as test_file:
+            for TASK_LIST in TASKS_LIST:
+                test_file.write(TASK_LIST)
