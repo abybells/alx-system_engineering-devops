@@ -1,35 +1,28 @@
 #!/usr/bin/python3
-"""Request employee ID from API
-with TODO list progress
 """
-
-from json import load
-import requests
-from sys import argv
-
+Write a Python script that, using this REST API, for a given employee ID,
+returns information about his/her TODO list progress
+"""
 if __name__ == "__main__":
 
-    def make_request(resource, param=None):
-        """Retrieve user from API
-        """
-        url = 'https://jsonplaceholder.typicode.com/'
-        url += resource
-        if param:
-            url += ('?' + param[0] + '=' + param[1])
+    import requests
+    import sys
 
-        # make request
-        r = requests.get(url)
+    if len(sys.argv) == 2 and sys.argv[1].isdigit():
+        u_url = 'https://jsonplaceholder.typicode.com/users/'
+        td_url = 'https://jsonplaceholder.typicode.com/todos?userId='
 
-        # extract json response
-        r = r.json()
-        return r
+        EMPLOYEE_NAME = requests.get(u_url + sys.argv[1]).json()['name']
+        NUMBER_OF_DONE_TASKS = len([task for task in requests.
+                                    get(td_url + sys.argv[1]).json()
+                                    if task['completed'] is True])
+        TOTAL_NUMBER_OF_TASKS = len(requests.get(td_url + sys.argv[1]).json())
+        DONE_TASKS_TITLES = [task['title'] for task in requests.
+                             get(td_url + sys.argv[1]).json()
+                             if task['completed'] is True]
 
-    user = make_request('users', ('id', argv[1]))
-    tasks = make_request('todos', ('userId', argv[1]))
-    tasks_completed = [task for task in tasks if task['completed']]
-
-    print('Employee {} is done with tasks({}/{}):'.format(user[0]['name'],
-                                                          len(tasks_completed),
-                                                          len(tasks)))
-    for task in tasks_completed:
-        print('\t {}'.format(task['title']))
+        print('Employee {} is done with tasks({}/{}):'.
+              format(EMPLOYEE_NAME, NUMBER_OF_DONE_TASKS,
+                     TOTAL_NUMBER_OF_TASKS))
+        for TASK_TITLE in DONE_TASKS_TITLES:
+            print('\t {}'.format(TASK_TITLE))
