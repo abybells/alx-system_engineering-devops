@@ -12,7 +12,7 @@ if __name__ == "__main__":
         u_url = 'https://jsonplaceholder.typicode.com/users/'
         td_url = 'https://jsonplaceholder.typicode.com/todos?userId='
 
-        user_data = requests.get(u.url + sys.argv[1]).json()
+        user_data = requests.get(u_url + sys.argv[1]).json()
         USER_ID = user_data.get('id')
         USERNAME = user_data.get('username')
         TASK_COMPLETED_STATUS = [task['completed'] for task in requests.
