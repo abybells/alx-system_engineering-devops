@@ -29,4 +29,4 @@ if __name__ == "__main__":
         with open('{}.csv'.format(USER_ID), 'w', newline='') as csvfile:
             csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
             for TASK_LIST in TASKS_LIST:
-                test_file.write(TASK_LIST)
+                csvfile.write(TASK_LIST)
