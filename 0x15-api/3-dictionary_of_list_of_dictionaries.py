@@ -33,5 +33,5 @@ if __name__ == "__main__":
             TASKS_DICT_ALL_USERS["{}".format(USER_ID)] = TASKS_DICT[
                 "{}".format(USER_ID)]
 
-        with open('todo_all_employees.json', 'w') as fp:
-            json.dump(TASKS_DICT_ALL_USERS, fp)
+        with open('todo_all_employees.json', 'w') as jsonfile:
+            json.dump(TASKS_DICT_ALL_USERS, jsonfile)
