@@ -48,5 +48,5 @@ frontend abybells-frontend-https
 
 backend abybells-backend
         balance roundrobin
-        server 18348-web-01 3.237.34.221:80 check
-        server 18348-web-02 3.210.181.7:80 check
+        server 18348-web-01 44.200.137.216:80 check
+        server 18348-web-02 18.206.238.153:80 check
