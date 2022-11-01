@@ -32,7 +32,7 @@ def count_words(subreddit, word_list):
                 break
             r = requests.get("{}?after={}".format(url, after), headers=headers)
             
-    storage = [k, storage[k]) for k in
+    storage = [(k, storage[k]) for k in
                sorted(storage, key=storage.get, reverse=True)]
     
     if len(storage) == 0:
