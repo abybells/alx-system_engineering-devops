@@ -3,6 +3,7 @@
 parse titles of all hot articles and
 prints a sorted count of given keywords
 """
+import json
 import requests
 import sys
 
