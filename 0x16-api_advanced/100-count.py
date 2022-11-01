@@ -11,31 +11,36 @@ import sys
 headers = {'User-Agent': 'My User Agent 1.0'}
 
 
-def count_words(subreddit, word_list):
+def count_words(subreddit, word_list, found_list=[], after=None):
     """parses the title of all hot articles, and prints a sorted count of given
     keywords (case-insensitive, delimited by spaces) """
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    storage = {word.lower(): 0 for word in word_list}
-    r = requests.get(url, headers=headers)
-    if (r.status_code == 404 or 'data' not in r.json()):
-        return None
+    posts = requests.get('http://www.reddit.com/r/{}/hot.json?after={}'
+                         .format(subreddit, after), headers=headers)
+    if after is None:
+        word_list = [word.lower() for word in word_list]
+
+    if posts.status_code == 200:
+        posts = posts.json()['data']
+        aft = posts['after']
+        posts = posts['children']
+        for post in posts:
+            title = post['data']['title'].lower()
+            for word in title.split(' '):
+                if word in word_list:
+                    found_list.append(word)
+        if aft is not None:
+            count_words(subreddit, word_list, found_list, aft)
+        else:
+            result = {}
+            found_list.sort()
+            for word in found_list:
+                if word.lower() in result.keys():
+                    result[word.lower()] += 1
+                else:
+                    result[word.lower()] = 1
+            for key, value in sorted(result.items(), key=lambda item: item[1],
+                                     reverse=True):
+                print('{}: {}'.format(key, value))
     else:
-        while (1):
-            r = r.json()
-            for post in r['data']['children']:
-                tmp = post['data']['title'].split()
-                for word in tmp:
-                    if word.lower() in storage.keys():
-                        storage[word.lower()] += 1
-            after = r['data']['after']
-            if (after is None):
-                break
-            r = requests.get("{}?after={}".format(url, after), headers=headers)
-    storage = [(k, storage[k]) for k in
-               sorted(storage, key=storage.get, reverse=True)]
-    if len(storage) == 0:
-        print("")
-    else:
-        for k, v in storage:
-            if (v > 0):
-                print("{}: {:d}".format(k, v))
+        return
