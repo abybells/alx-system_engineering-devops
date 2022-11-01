@@ -20,6 +20,6 @@ def top_ten(subreddit):
                            headers=headers, allow_redirects=False)
     myArray = [element['data']['title'] for element in response.
                json()['data']['children']]
-    print(*myArray, sep='\n')               
-  except:
-    print(None)
+    print(*myArray, sep='\n')
+    except:
+      print(None)
