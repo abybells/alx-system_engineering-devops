@@ -8,17 +8,18 @@ import json
 import requests
 import sys
 
-headers = { 'User-Agent': 'My User Agent 1.0' }
+headers = {
+	'User-Agent': 'My User Agent 1.0'
+}
 
 
 def number_of_subscribers(subreddit):
 	"""function that returns the number
 	of subscribers"""
 	try:
-	url = 'https://www.reddit.com/r/'
-	response = request.get(url + subreddit + "/about.json",
-				headers=headers, allow_redirects=False)
-	return response.json()['data']['subscribers']
+		url = 'https://www.reddit.com/r/'
+		response = request.get(url + subreddit + "/about.json",
+				       headers=headers, allow_redirects=False)
+		return response.json()['data']['subscribers']
 	except:
 		return 0
-
