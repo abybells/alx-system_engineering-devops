@@ -16,7 +16,6 @@ def count_words(subreddit, word_list):
     keywords (case-insensitive, delimited by spaces) """
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     storage = {word.lower(): 0 for word in word_list}
-    
     r = requests.get(url, headers=headers)
     if (r.status_code == 404 or 'data' not in r.json()):
         return None
@@ -32,10 +31,8 @@ def count_words(subreddit, word_list):
             if (after is None):
                 break
             r = requests.get("{}?after={}".format(url, after), headers=headers)
-            
     storage = [(k, storage[k]) for k in
                sorted(storage, key=storage.get, reverse=True)]
-    
     if len(storage) == 0:
         print("")
     else:
