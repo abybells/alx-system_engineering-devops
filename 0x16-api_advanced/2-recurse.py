@@ -24,14 +24,16 @@ def recurse(subreddit, hot_list=[]):
             response = requests.get(url + subreddit + "/hot.json?after=" +
                                     after, headers=headers,
                                     allow_redirects=False)
+            # pprint.pprint(response.json())
         else:
             response = requests.get(url + subreddit + "/hot.json",
                                     headers=headers, allow_redirects=False)
+            # pprint.pprint(response.json())
         after = response.json()['data']['after']
         hot_list += [element['data']['title'] for element in response.
                      json()['data']['children']]
         if after:
             return recurse(subreddit, hot_list)
-            return hot_list
+        return hot_list
     except:
         return None
