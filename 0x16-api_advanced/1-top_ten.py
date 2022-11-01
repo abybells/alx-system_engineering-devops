@@ -18,8 +18,8 @@ def top_ten(subreddit):
     url = 'https://www.reddit.com/r/'
     response = request.get(url + subreddit + "/hot.json?limit=10",
                            headers=headers, allow_redirects=False)
-    myArray = [element['data'][title'] for element in
-                               response.json()['data']['children']]
-               print(*myArray, sep='\n')
+    myArray = [element['data']['title'] for element in response.
+               json()['data']['children']]
+    print(*myArray, sep='\n')               
   except:
-               print(None)
+    print(None)
