@@ -8,7 +8,7 @@ import requests
 import sys
 
 headers = {
-  'User-Agent': 'My User Agent 1.0'
+  'User-Agent' : 'My User Agent 1.0'
 }
 after = None
 
