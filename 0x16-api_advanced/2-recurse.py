@@ -4,7 +4,6 @@ script that returns list of all hot articles
 for a given subreddit, returns None if invalid
 """
 import json
-import pprint
 import requests
 import sys
 
