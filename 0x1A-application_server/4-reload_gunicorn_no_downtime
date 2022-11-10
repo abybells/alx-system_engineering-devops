@@ -1,3 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 # No service interruption
+
 pkill -HUP gunicorn
