@@ -40,7 +40,7 @@ server {
         }
 
         location /static/ {
-                root /home/ubuntu/AirBnB_clone_v4/web_dynamic/;
+                proxy_pass http://127.0.0.0:5003;
         }
 
 
